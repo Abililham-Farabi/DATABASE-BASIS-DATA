@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas Kuliah - Pengantar Basis Data</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .db-nav-btn.active { border-color: rgba(99,102,241,0.5); background: rgba(99,102,241,0.05); }
+        .db-nav-btn.active span:first-child { color: #fff; }
+        .db-nav-btn.active span:last-child { color: #818cf8; }
+        .fade-in { animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-slate-950 text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
+  <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+   <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-3">
+     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-indigo-500/20"><i data-lucide="database" class="w-5 h-5 text-white"></i>
+     </div>
+     <div>
+      <h1 id="main-title" class="text-lg font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Tugas Basis Data</h1>
+      <p id="main-subtitle" class="text-xs text-slate-500">Sejarah RDBMS &amp; Kasus Penyalahgunaan</p>
+     </div>
+    </div>
+    <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800"><button onclick="switchTab('tab-sejarah')" id="btn-sejarah" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-indigo-600 text-white">1. Sejarah &amp; Perbandingan</button> <button onclick="switchTab('tab-kasus')" id="btn-kasus" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-100">2. Kasus Penyalahgunaan</button>
+    </div>
+   </div>
+  </header>
+  <main class="max-w-6xl w-full mx-auto px-4 py-8 flex-grow overflow-auto"><!-- TAB 1: SEJARAH -->
+   <section id="tab-sejarah" class="space-y-8">
+    <div class="border-b border-slate-800 pb-5">
+     <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-2"><span class="text-indigo-400">01.</span> Sejarah &amp; Karakteristik Database Utama</h2>
+     <p class="text-slate-400 mt-1">Ulasan detail mengenai sejarah, kelebihan, serta kekurangan dari 5 sistem basis data relasional terpopuler di dunia.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-3"><button onclick="showDb('mysql')" id="nav-mysql" class="db-nav-btn active p-4 rounded-xl border border-slate-800 bg-slate-900/40 text-center transition-all hover:border-slate-700"> <span class="block font-bold text-lg">MySQL</span> <span class="text-xs">Open Source</span> </button> <button onclick="showDb('oracle')" id="nav-oracle" class="db-nav-btn p-4 rounded-xl border border-slate-800 bg-slate-900/40 text-slate-400 text-center transition-all hover:border-slate-700"> <span class="block font-bold text-lg">Oracle</span> <span class="text-xs">Enterprise</span> </button> <button onclick="showDb('postgres')" id="nav-postgres" class="db-nav-btn p-4 rounded-xl border border-slate-800 bg-slate-900/40 text-slate-400 text-center transition-all hover:border-slate-700"> <span class="block font-bold text-lg">PostgreSQL</span> <span class="text-xs">Advanced</span> </button> <button onclick="showDb('sqlserver')" id="nav-sqlserver" class="db-nav-btn p-4 rounded-xl border border-slate-800 bg-slate-900/40 text-slate-400 text-center transition-all hover:border-slate-700"> <span class="block font-bold text-lg">SQL Server</span> <span class="text-xs">Microsoft</span> </button> <button onclick="showDb('sqlite')" id="nav-sqlite" class="db-nav-btn p-4 rounded-xl border border-slate-800 bg-slate-900/40 text-slate-400 text-center transition-all hover:border-slate-700"> <span class="block font-bold text-lg">SQLite</span> <span class="text-xs">Embedded</span> </button>
+    </div>
+    <div id="db-content" class="fade-in bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5"></div>
+   </section><!-- TAB 2: KASUS -->
+   <section id="tab-kasus" class="space-y-8 hidden">
+    <div class="border-b border-slate-800 pb-5">
+     <h2 class="text-2xl font-bold text-slate-100 flex items-center gap-2"><span class="text-indigo-400">02.</span> Kasus Penyalahgunaan Basis Data</h2>
+     <p class="text-slate-400 mt-1">Studi kasus nyata tentang kebocoran dan penyalahgunaan data yang menggemparkan dunia.</p>
+    </div>
+    <div class="space-y-6">
+     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-4">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg text-white">Facebook–Cambridge Analytica (2018)</h3><span class="text-xs text-slate-500">Kebocoran data 87 juta pengguna</span>
+       </div>
+      </div>
+      <p class="text-slate-300 text-sm leading-relaxed">Cambridge Analytica mengumpulkan data pribadi jutaan pengguna Facebook tanpa persetujuan mereka melalui aplikasi kuis kepribadian. Data tersebut digunakan untuk membuat profil psikografis pemilih dan menargetkan iklan politik selama pemilihan presiden AS 2016. Skandal ini mengungkapkan betapa rentannya data pengguna di platform media sosial dan memicu regulasi perlindungan data yang lebih ketat di seluruh dunia.</p>
+      <div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-red-500/10 text-red-400 text-xs rounded-full font-medium">Pelanggaran Privasi</span> <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full font-medium">Manipulasi Politik</span> <span class="px-3 py-1 bg-blue-500/10 text-blue-400 text-xs rounded-full font-medium">Media Sosial</span>
+      </div>
+     </div>
+     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-4">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+        <i data-lucide="shield-off" class="w-5 h-5 text-red-400"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg text-white">Equifax Data Breach (2017)</h3><span class="text-xs text-slate-500">147 juta data keuangan bocor</span>
+       </div>
+      </div>
+      <p class="text-slate-300 text-sm leading-relaxed">Peretas mengeksploitasi kerentanan pada aplikasi web Equifax dan berhasil mengakses basis data berisi informasi sensitif seperti nomor jaminan sosial, tanggal lahir, dan nomor kartu kredit milik 147 juta warga Amerika. Perusahaan gagal menambal kerentanan yang sudah diketahui selama berbulan-bulan, menunjukkan kelalaian serius dalam manajemen keamanan basis data.</p>
+      <div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-red-500/10 text-red-400 text-xs rounded-full font-medium">Data Keuangan</span> <span class="px-3 py-1 bg-purple-500/10 text-purple-400 text-xs rounded-full font-medium">Kelalaian Keamanan</span> <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-full font-medium">Identitas Tercuri</span>
+      </div>
+     </div>
+     <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-4">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+        <i data-lucide="eye-off" class="w-5 h-5 text-red-400"></i>
+       </div>
+       <div>
+        <h3 class="font-bold text-lg text-white">Yahoo Data Breach (2013-2014)</h3><span class="text-xs text-slate-500">3 miliar akun terkompromi</span>
+       </div>
+      </div>
+      <p class="text-slate-300 text-sm leading-relaxed">Dalam pelanggaran data terbesar dalam sejarah, Yahoo mengungkapkan bahwa seluruh 3 miliar akun penggunanya telah diretas. Data yang bocor mencakup nama, alamat email, nomor telepon, tanggal lahir, dan kata sandi terenkripsi. Yahoo baru mengungkapkan insiden ini pada 2016, tiga tahun setelah pelanggaran terjadi, yang semakin menurunkan kepercayaan publik.</p>
+      <div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-red-500/10 text-red-400 text-xs rounded-full font-medium">Skala Masif</span> <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full font-medium">Keterlambatan Pelaporan</span> <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-xs rounded-full font-medium">Kredensial Bocor</span>
+      </div>
+     </div>
+    </div>
+    <div class="bg-indigo-500/5 border border-indigo-500/20 rounded-2xl p-6">
+     <h3 class="font-bold text-indigo-300 mb-2">Kesimpulan &amp; Pelajaran</h3>
+     <p class="text-slate-300 text-sm leading-relaxed">Kasus-kasus di atas menunjukkan pentingnya pengelolaan basis data yang bertanggung jawab. Prinsip utama yang harus diterapkan meliputi: <strong class="text-white">enkripsi data sensitif</strong>, <strong class="text-white">kontrol akses berbasis peran (RBAC)</strong>, <strong class="text-white">audit log secara berkala</strong>, dan <strong class="text-white">kepatuhan terhadap regulasi</strong> seperti GDPR dan UU PDP Indonesia.</p>
+    </div>
+   </section>
+  </main>
+  <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-600">
+   Tugas Pengantar Basis Data — 2025
+  </footer>
+  <script>
+        const dbData = {
+            mysql: {
+                name: 'MySQL',
+                year: '1995',
+                creator: 'Michael Widenius & David Axmark',
+                owner: 'Oracle Corporation (sejak 2010)',
+                history: 'MySQL dikembangkan oleh perusahaan Swedia MySQL AB pada 1995. Nama "My" berasal dari putri co-founder Michael Widenius. MySQL menjadi komponen utama stack LAMP (Linux, Apache, MySQL, PHP) yang mendominasi web pada awal 2000-an. Sun Microsystems mengakuisisi MySQL AB pada 2008, kemudian Oracle mengakuisisi Sun pada 2010.',
+                pros: ['Gratis dan open source (edisi Community)', 'Performa tinggi untuk operasi baca', 'Komunitas sangat besar & dokumentasi lengkap', 'Mudah dipelajari dan digunakan', 'Replikasi master-slave yang stabil'],
+                cons: ['Fitur enterprise terbatas dibanding Oracle/PostgreSQL', 'Kurang mendukung standar SQL penuh', 'Pengembangan melambat di bawah Oracle', 'Tidak ideal untuk query analitik kompleks']
+            },
+            oracle: {
+                name: 'Oracle Database',
+                year: '1979',
+                creator: 'Larry Ellison, Bob Miner, Ed Oates',
+                owner: 'Oracle Corporation',
+                history: 'Oracle Database adalah RDBMS komersial pertama yang berhasil di pasaran. Dirilis pertama kali pada 1979 oleh Relational Software Inc (kemudian menjadi Oracle Corp). Oracle menjadi standar industri untuk sistem enterprise berskala besar, digunakan oleh bank, pemerintah, dan perusahaan Fortune 500 di seluruh dunia.',
+                pros: ['Skalabilitas dan performa luar biasa', 'Fitur keamanan dan audit sangat lengkap', 'Real Application Clusters (RAC) untuk high availability', 'PL/SQL yang sangat powerful', 'Dukungan teknis enterprise kelas dunia'],
+                cons: ['Biaya lisensi sangat mahal', 'Kompleksitas administrasi tinggi', 'Membutuhkan hardware yang kuat', 'Vendor lock-in yang kuat']
+            },
+            postgres: {
+                name: 'PostgreSQL',
+                year: '1996',
+                creator: 'Michael Stonebraker (UC Berkeley)',
+                owner: 'PostgreSQL Global Development Group',
+                history: 'Bermula dari proyek POSTGRES di UC Berkeley pada 1986 oleh Michael Stonebraker. Pada 1996, proyek ini berganti nama menjadi PostgreSQL setelah menambahkan dukungan SQL. PostgreSQL dikenal sebagai database open source paling canggih, dengan fitur yang menyaingi database komersial.',
+                pros: ['Sepenuhnya open source dan gratis', 'Kepatuhan standar SQL paling tinggi', 'Mendukung tipe data custom dan ekstensi (PostGIS, dll)', 'MVCC untuk concurrency tinggi', 'JSON/JSONB untuk data semi-terstruktur'],
+                cons: ['Performa baca sedikit lebih lambat dari MySQL', 'Konsumsi memori lebih tinggi', 'Replikasi bawaan kurang matang dibanding MySQL', 'Kurva belajar lebih curam untuk pemula']
+            },
+            sqlserver: {
+                name: 'Microsoft SQL Server',
+                year: '1989',
+                creator: 'Microsoft & Sybase (awalnya)',
+                owner: 'Microsoft Corporation',
+                history: 'SQL Server pertama kali dirilis pada 1989 sebagai hasil kerjasama Microsoft dan Sybase untuk platform OS/2. Setelah berpisah dari Sybase pada 1994, Microsoft mengembangkan SQL Server secara mandiri. Kini tersedia juga di Linux dan Docker, menandai pergeseran strategi Microsoft ke arah cross-platform.',
+                pros: ['Integrasi sempurna dengan ekosistem Microsoft', 'SQL Server Management Studio (SSMS) yang intuitif', 'Business Intelligence tools bawaan', 'Edisi Express gratis untuk penggunaan kecil', 'Performa query optimizer yang sangat baik'],
+                cons: ['Biaya lisensi enterprise mahal', 'Historis hanya Windows (kini sudah di Linux)', 'Kurang populer di komunitas open source', 'Konsumsi resource yang besar']
+            },
+            sqlite: {
+                name: 'SQLite',
+                year: '2000',
+                creator: 'D. Richard Hipp',
+                owner: 'Public Domain',
+                history: 'SQLite dibuat oleh D. Richard Hipp pada tahun 2000 untuk proyek kontraktor militer AS. Keunikannya adalah tidak memerlukan server terpisah — seluruh database tersimpan dalam satu file. SQLite kini menjadi database paling banyak di-deploy di dunia, tertanam di setiap smartphone, browser, dan jutaan aplikasi.',
+                pros: ['Zero-configuration, tanpa server', 'Sangat ringan (library < 1MB)', 'Database dalam satu file portabel', 'Public domain, benar-benar gratis', 'Sangat reliable — digunakan di pesawat & smartphone'],
+                cons: ['Tidak cocok untuk akses konkuren tinggi', 'Tidak ada manajemen pengguna/role', 'Terbatas untuk dataset sangat besar', 'Tidak mendukung replikasi bawaan']
+            }
+        };
+
+        let currentDb = 'mysql';
+        let currentTab = 'tab-sejarah';
+
+        function switchTab(tabId) {
+            document.getElementById('tab-sejarah').classList.toggle('hidden', tabId !== 'tab-sejarah');
+            document.getElementById('tab-kasus').classList.toggle('hidden', tabId !== 'tab-kasus');
+            document.getElementById('btn-sejarah').className = tabId === 'tab-sejarah' 
+                ? 'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-indigo-600 text-white'
+                : 'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-100';
+            document.getElementById('btn-kasus').className = tabId === 'tab-kasus'
+                ? 'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-indigo-600 text-white'
+                : 'px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-400 hover:text-slate-100';
+            currentTab = tabId;
+        }
+
+        function showDb(key) {
+            currentDb = key;
+            document.querySelectorAll('.db-nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('nav-' + key).classList.add('active');
+            renderDbContent();
+        }
+
+        function renderDbContent() {
+            const db = dbData[currentDb];
+            const container = document.getElementById('db-content');
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">${db.name}</h3>
+                        <p class="text-slate-500 text-sm">Dirilis: ${db.year} · Oleh: ${db.creator}</p>
+                        <p class="text-slate-500 text-sm">Pemilik saat ini: ${db.owner}</p>
+                    </div>
+                    <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded-full font-medium self-start">Sejak ${db.year}</span>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-slate-200 mb-2">Sejarah Singkat</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">${db.history}</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4">
+                        <h4 class="font-semibold text-emerald-400 mb-2 flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> Kelebihan</h4>
+                        <ul class="space-y-1.5">${db.pros.map(p => `<li class="text-slate-300 text-sm flex items-start gap-2"><span class="text-emerald-500 mt-1">•</span>${p}</li>`).join('')}</ul>
+                    </div>
+                    <div class="bg-red-500/5 border border-red-500/10 rounded-xl p-4">
+                        <h4 class="font-semibold text-red-400 mb-2 flex items-center gap-2"><i data-lucide="x-circle" class="w-4 h-4"></i> Kekurangan</h4>
+                        <ul class="space-y-1.5">${db.cons.map(c => `<li class="text-slate-300 text-sm flex items-start gap-2"><span class="text-red-500 mt-1">•</span>${c}</li>`).join('')}</ul>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('fade-in');
+            void container.offsetWidth;
+            container.classList.add('fade-in');
+            lucide.createIcons();
+        }
+
+        // Element SDK
+        const defaultConfig = {
+            page_title: 'Tugas Basis Data',
+            subtitle: 'Sejarah RDBMS & Kasus Penyalahgunaan',
+            background_color: '#020617',
+            surface_color: '#0f172a',
+            text_color: '#e2e8f0',
+            primary_action: '#4f46e5',
+            secondary_action: '#94a3b8',
+            font_family: 'Plus Jakarta Sans',
+            font_size: 16
+        };
+
+        function applyConfig(config) {
+            const title = config.page_title || defaultConfig.page_title;
+            const sub = config.subtitle || defaultConfig.subtitle;
+            const bg = config.background_color || defaultConfig.background_color;
+            const surface = config.surface_color || defaultConfig.surface_color;
+            const text = config.text_color || defaultConfig.text_color;
+            const primary = config.primary_action || defaultConfig.primary_action;
+            const secondary = config.secondary_action || defaultConfig.secondary_action;
+            const font = config.font_family || defaultConfig.font_family;
+            const size = config.font_size || defaultConfig.font_size;
+
+            document.getElementById('main-title').textContent = title;
+            document.getElementById('main-subtitle').textContent = sub;
+            document.body.style.backgroundColor = bg;
+            document.body.style.color = text;
+            document.body.style.fontFamily = `${font}, sans-serif`;
+            document.body.style.fontSize = size + 'px';
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: async (config) => { applyConfig(config); },
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+                        { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+                        { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+                        { get: () => config.primary_action || defaultConfig.primary_action, set: (v) => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+                        { get: () => config.secondary_action || defaultConfig.secondary_action, set: (v) => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+                    ],
+                    borderables: [],
+                    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+                    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['page_title', config.page_title || defaultConfig.page_title],
+                    ['subtitle', config.subtitle || defaultConfig.subtitle]
+                ])
+            });
+        }
+
+        // Init
+        renderDbContent();
+        lucide.createIcons();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9fe7d17b4513c031',t:'MTc3OTI0MzE2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
